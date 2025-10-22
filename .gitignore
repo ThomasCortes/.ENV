@@ -20,6 +20,10 @@ db.sqlite3
 *.pyc
 *.pyo
 *.pyd
+
+
+
+
 *.tmp
 *.bak
 *.swp
