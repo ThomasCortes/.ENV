@@ -1,5 +1,3 @@
-from pathlib import Path
-
 """
 Django settings for Nutriet project.
 
@@ -22,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-lb&^f0*e(=%-ermtvz1)wjl+r)oz3jam1#rm8dh&jjb8zp7b3u'
+SECRET_KEY = 'django-insecure-wqv22ucm5==(!g6(&d%^)vhzp8*5p5!l63f4=jd(7bz)+153i1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,8 +40,7 @@ INSTALLED_APPS = [
     #Apps terceros
     #Nuevas apps
     'applications.home',
-    'applications.Usuarios'
-
+    'applications.Usuarios',
 ]
 
 MIDDLEWARE = [
@@ -61,8 +58,7 @@ ROOT_URLCONF = 'Nutriet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'applications' / 'Usuarios' / 'templates',
-                BASE_DIR / 'applications' / 'home' / 'templates'],
+        'DIRS': [BASE_DIR / 'applications' / 'home' / 'templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,11 +78,14 @@ WSGI_APPLICATION = 'Nutriet.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'nutriet',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -122,9 +121,27 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+import os
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'applications/Usuarios/static'),
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Redirige aqui despues de un login exitoso
+LOGIN_REDIRECT_URL = '/'
+
+# Redirige aqui si se intenta acceder a una pagina protegida sin estar logueado
+LOGIN_URL = '/accounts/login/'
+
+# Redirige aqui despues de un logout
+LOGOUT_REDIRECT_URL = '/'
+
+LOGIN_TEMPLATE = 'login/login.html'
