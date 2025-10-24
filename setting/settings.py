@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     #Apps terceros
     #Nuevas apps
     'applications.home',
+    'applications.Usuarios'
 
 ]
 
@@ -60,7 +61,8 @@ ROOT_URLCONF = 'Nutriet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'applications' / 'home' / 'templates',],
+        'DIRS': [BASE_DIR / 'applications' / 'Usuarios' / 'templates',
+                BASE_DIR / 'applications' / 'home' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

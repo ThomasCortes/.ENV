@@ -222,8 +222,11 @@ header {
   <section id="inicio">
     <p id="Nom">NUTRIET</p>
     <p id="eslogan">"Come bien vive feliz"</p>
-    <a href="Login.html"><button id="init_sec">Iniciar sesión</button></a>
-    <a href="register.html"><button id="register">Registrarse</button></a>
+
+    <a href="{% url 'login' %}"><button id="init_sec">Iniciar sesión</button></a>
+
+    <a href="{% url 'register' %}"><button id="register">Registrarse</button></a>
+
   </section>
 
   <!-- footer informacion y contactos -->

@@ -1,0 +1,212 @@
+<style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+.container {
+  display: flex;
+  width: 90%;
+  max-width: 1200px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-container {
+  flex: 1;
+  max-width: 600px;
+  transform: scale(1.1);
+  transform-origin: left center;
+
+}
+body {
+  flex: 1;
+  padding: 190px 20px;
+  min-width: 300px;
+  flex-wrap: wrap; 
+}
+.volver {
+  background-color: #ff1660;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #ff1660;
+  margin-bottom: 25px;
+  font-size: 28px;
+}
+
+form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.terminos {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.terminos input {
+  margin-right: 5px;
+}
+
+.registrar {
+  background-color: #fff5d1;
+  color: #000;
+  font-weight: 600;
+  border: 1px solid #000;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  color: #888;
+  font-weight: 500;
+}
+
+.social-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.social-buttons button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.social-buttons img {
+  width: 20px;
+}
+
+.login-text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.login-text a {
+  color: #ff1660;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+
+.logo {
+  margin-left: 200px;
+  margin-top: 100px;
+  height: 500px;
+  width: 500px;
+  border-radius: 50px;
+}
+
+.brand {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.slogan {
+  font-size: 16px;
+  color: #555;
+}
+
+</style>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Nutriet</title>
+  <link rel="stylesheet" href="../styles/register.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="../scripts/login.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+            <a href="index.html"><button class="volver">← volver</button></a>
+
+      <h2>Iniciar Sesión</h2>
+
+      <form>
+        <label>Correo Electrónico</label>
+        <input type="text" placeholder="Ingresa tu nombre" />
+
+        <label>Contraseña</label>
+        <input type="password" placeholder="Crea una contraseña" />
+        
+
+        <div class="terminos">
+          <input type="checkbox" />
+          <span>Recordarme en 30 dias</span>
+        </div>
+
+        <a href="forms/Form_1.html"><button class="registrar">Iniciar sesión</button></a>
+
+        <div class="divider">Or</div>
+
+        <div class="social-buttons">
+          <button class="google">
+            <img src="https://cdn-icons-png.flaticon.com/512/720/720255.png" alt="Google" />
+            Continuar con Google
+          </button>
+          <button class="apple">
+            <img src="https://cdn-icons-png.flaticon.com/512/0/747.png" alt="Apple" />
+            Continuar con Apple
+          </button>
+        </div>
+
+        <p class="login-text">
+          No tienes una cuenta? <a href="/frontend/src/pages/register.html">Registrate</a>
+        </p>
+
+        <p class="login-text">
+          ¿Olvidaste tu contraseña? <a href="/frontend/src/pages/recuperar_contraseña.html">Recuperar Contraseña</a>
+
+      </form>
+    </div>
+
+    <div class="logo-container">
+      <img src="/frontend/src/images/logo Nutriet.png" alt="Nutriet Logo" class="logo" />
+    </div>
+  </div>
+</body>
+</html>
+
