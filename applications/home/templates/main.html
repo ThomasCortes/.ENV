@@ -1,0 +1,145 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Menú Lateral</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        /* 1. Estilos base del menú */
+        .menu-lateral {
+            height: 100%; /* Ocupa toda la altura de la pantalla */
+            width: 250px; /* Ancho fijo del menú */
+            position: fixed; /* Fijo en la pantalla */
+            z-index: 9999; /* Valor alto para asegurar que esté por encima de todo */
+            top: 0;
+            left: -250px; /* Inicialmente oculto */
+            background-color: rgb(255, 249, 230);
+            padding-top: 60px;
+            transition: left 0.3s ease-in-out;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2); /* Sombra para mejor visibilidad */
+        }
+
+        /* Estado ABIERTO */
+        .menu-lateral.activo {
+            left: 0;
+        }
+
+        /* Estilos para los enlaces del menú */
+        .menu-lateral a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: rgb(0, 0, 0);
+            display: block;
+
+        }
+
+        .menu-lateral a:hover {
+            background-color: rgb(255, 249, 230);
+        }
+
+        /* Estilos para los botones */
+        #boton-abrir-cerrar {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            z-index: 1;
+            padding: 10px 15px;
+            height: 100%;
+            background-color: rgb(255, 249, 230);
+            color: #f50057;
+            border: none;
+            cursor: pointer;
+        }
+        #home {
+            margin-top: 200px;
+        }
+    
+        #boton-cerrar {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background: none;
+            border: none;
+            color: solid black;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        ul {
+            list-style-type: none;
+            margin: 10px;
+            padding: 0;
+            
+        }
+        li {
+            left: 400px;
+            margin-bottom: 20px;
+        }
+        #cerrar {
+            margin-top: 300px; 
+            margin-left: 30px;
+        }
+        #home, #apple, #chart, #calendar, #cog, #gem  {
+            margin-left: 25px;
+        }
+
+        img {
+            width: 70px;
+            height: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="boton-abrir-cerrar">
+        <div >
+            <ul>
+            <img src="{% static 'images/logo.png' %}" alt="Nutriet Logo" class="logo" />
+            <li id="home"><i class="fas fa-home"></i></li>
+            <li id="apple"><i class="fas fa-apple-alt"></i></li>
+            <li id="chart"><i class="fas fa-chart-line"></i></li>
+            <li id="calendar"><i class="fas fa-calendar-alt"></i></li>
+            <li id="cog"><i class="fas fa-cog"></i></li>
+            <li id="gem"><i class="fas fa-gem"></i></li>
+            <li id="cerrar"><i class="fas fa-right-from-bracket"></i></li>
+            </ul>
+        </div>
+    </div>
+
+    <aside id="menu-lateral" class="menu-lateral">
+        <a id="home" href="#home"><i class="fas fa-home"></i>   Inicio</a>
+        <a id="apple" href="#about"><i class="fas fa-apple-alt"></i>   Dietas</a>
+        <a id="chart" href="#services"><i class="fas fa-chart-line"></i>   Seguimiento</a>
+        <a id="calendar" href="#about"><i class="fas fa-calendar-alt"></i>   Calendario</a>
+        <a id="cog" href="#contact"><i class="fas fa-cog"></i>   Configuración</a>
+        <a id="gem" href="#plan"><i class="fas fa-gem"></i>   Planes</a>
+        <button id="boton-cerrar">◀</button>
+        <a href="#inicio_sesion" id="cerrar"><i class="fas fa-right-from-bracket"></i>   Cerrar sesión</a>
+    </aside>
+
+    <script>
+        // 1. Obtener los elementos
+        const menuLateral = document.getElementById('menu-lateral');
+        const botonToggle = document.getElementById('boton-abrir-cerrar');
+        const botonCerrar = document.getElementById('boton-cerrar');
+
+        // Función para alternar la clase (abrir/cerrar)
+        function alternarMenu() {
+            menuLateral.classList.toggle('activo');
+        }
+
+        // 2. Asignar los eventos
+        botonToggle.addEventListener('click', alternarMenu);
+        botonCerrar.addEventListener('click', alternarMenu);
+    </script>
+</body>
+</html>

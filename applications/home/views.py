@@ -8,4 +8,10 @@ class indexviews(TemplateView):
 def home(request):
     return render(request, "index.html")
 
+class MainViews(TemplateView):
+    template_name = 'main.html'
+
+def home(request):
+    return render(request, "main.html")
+
 

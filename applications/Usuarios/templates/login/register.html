@@ -222,6 +222,58 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.querySelector("form");
+      const registrar = document.querySelector(".registrar");
+      const nombreInput = form.querySelector('input[type="text"]');
+      const emailInput = form.querySelector('input[type="email"]');
+      const passwordInput = form.querySelector('input[type="password"]');
+      const terminosCheckbox = form.querySelector('input[type="checkbox"]');
+
+      registrar.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        if (nombreInput && nombreInput.value.trim() === "") {
+          Swal.fire({ icon: 'warning', title: 'Oops...', text: 'Por favor, ingresa tu nombre.' });
+          nombreInput.focus();
+          return;
+        }
+
+        if (emailInput && emailInput.value.trim() === "") {
+          Swal.fire({ icon: 'warning', title: 'Oops...', text: 'Por favor, ingresa tu correo electrónico.' });
+          emailInput.focus();
+          return;
+        }
+
+        if (emailInput && !validateEmail(emailInput.value.trim())) {
+          Swal.fire({ icon: 'error', title: 'Correo inválido', text: 'Por favor, ingresa un correo electrónico válido.' });
+          emailInput.focus();
+          return;
+        }
+
+        if (passwordInput && passwordInput.value.trim() === "") {
+          Swal.fire({ icon: 'warning', title: 'Oops...', text: 'Por favor, crea una contraseña.' });
+          passwordInput.focus();
+          return;
+        }
+
+        if (terminosCheckbox && !terminosCheckbox.checked) {
+          Swal.fire({ icon: 'info', title: 'Atención', text: 'Debes aceptar los términos y condiciones.' });
+          return;
+        }
+
+        // Éxito
+        Swal.fire({ icon: 'success', title: '¡Registro exitoso!', text: 'Redirigiendo...' })
+          .then(() => form.submit());
+      });
+
+      function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      }
+    });
+  </script>
 
 </body>
 </html>

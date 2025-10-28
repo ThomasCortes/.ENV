@@ -87,6 +87,7 @@ DATABASES = {
     }
 }
 
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -145,3 +146,10 @@ LOGIN_URL = '/accounts/login/'
 LOGOUT_REDIRECT_URL = '/'
 
 LOGIN_TEMPLATE = 'login/login.html'
+
+AUTHENTICATION_BACKENDS = [
+    'applications.Usuarios.backends.CustomAuthBackend',
+    'django.contrib.auth.backends.ModelBackend', # Mantén el estándar si es necesario
+]
+
+AUTH_USER_MODEL = 'Usuarios.Usuario'

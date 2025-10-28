@@ -183,100 +183,69 @@
     <div class="form-container">
       <a href="{% url 'home' %}" target="_self"><button class="volver">← volver</button></a>
 
-      <h2>Iniciar sesión</h2>
+            <h2>Iniciar Sesión</h2>
 
-      <!-- Formulario Django -->
-      <form method="get">
-        {% csrf_token %}
-        {{ form.as_p }}
+            <form method="POST">
+                {% csrf_token %} <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Correo</label>
+                    {{ form.email }} 
+                    {% if form.email.errors %}
+                        <div class="error-text">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.password.id_for_label }}">Contraseña</label>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                        <div class="error-text">{{ form.password.errors }}</div>
+                    {% endif %}
+                </div>
 
-        <div class="terminos">
-          <input type="checkbox"/>
-          <span>Recordarme en 30 días</span>
+                <div class="terminos">
+                    <input type="checkbox" name="recordar" id="recordar">
+                    <label for="recordar">Recordarme en 30 días</label>
+                </div>
+
+                <button type="submit" class="registrar">Iniciar sesión</button> 
+            </form>
+            
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <div class="divider">Or</div>
+
+            <div class="social-buttons">
+                <button class="google">
+                    <img src="https://cdn-icons-png.flaticon.com/512/720/720255.png" alt="Google">
+                    Iniciar sesión con Google
+                </button>
+                <button class="apple">
+                    <img src="https://cdn-icons-png.flaticon.com/512/8/8747.png" alt="Apple">
+                    Iniciar sesión con Apple
+                </button>
+            </div>
+            
+            <div class="login-text">
+                ¿No tienes una cuenta? <a href="{% url 'signup' %}">Regístrate</a>
+            </div>
+            <p class="login-text">
+                ¿Olvidaste tu contraseña? <a href="#">Recuperar Contraseña</a>
+            </p>
+
         </div>
-
-        <button type="submit" class="registrar">Iniciar sesión</button>
-      </form>
-      
-
-      <div class="divider">Or</div>
-
-      <div class="social-buttons">
-        <button class="google">
-          <img src="https://cdn-icons-png.flaticon.com/512/720/720255.png" alt="Google" />
-          Iniciar sesión con Google
-        </button>
-        <button class="apple">
-          <img src="https://cdn-icons-png.flaticon.com/512/0/747.png" alt="Apple" />
-          Iniciar sesión con Apple
-        </button>
-      </div>
-
-      <p class="login-text">
-        ¿No tienes una cuenta? <a href="{% url 'signup' %}">Registrate</a>
-      </p>
-       <p class="login-text">
-          ¿Olvidaste tu contraseña? <a href="#">Recuperar Contraseña</a>
+        
+        <div class="logo-container">
+            <img src="{% static 'images/logo.png' %}" alt="Nutriet logo" class="logo">
+        </div>
     </div>
-    
+</body>
 
-    <div class="logo-container">
-        <img src="{% static 'images/logo.png' %}" alt="Nutriet Logo" class="logo" />
-    </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.querySelector("form");
-      const registrar = document.querySelector(".registrar");
-      const nombreInput = form.querySelector('input[type="text"]');
-      const emailInput = form.querySelector('input[type="email"]');
-      const passwordInput = form.querySelector('input[type="password"]');
-      const terminosCheckbox = form.querySelector('input[type="checkbox"]');
-
-      registrar.addEventListener("click", function (e) {
-        e.preventDefault();
-
-        if (nombreInput && nombreInput.value.trim() === "") {
-          Swal.fire({ icon: 'warning', title: 'Oops...', text: 'Por favor, ingresa tu nombre.' });
-          nombreInput.focus();
-          return;
-        }
-
-        if (emailInput && emailInput.value.trim() === "") {
-          Swal.fire({ icon: 'warning', title: 'Oops...', text: 'Por favor, ingresa tu correo electrónico.' });
-          emailInput.focus();
-          return;
-        }
-
-        if (emailInput && !validateEmail(emailInput.value.trim())) {
-          Swal.fire({ icon: 'error', title: 'Correo inválido', text: 'Por favor, ingresa un correo electrónico válido.' });
-          emailInput.focus();
-          return;
-        }
-
-        if (passwordInput && passwordInput.value.trim() === "") {
-          Swal.fire({ icon: 'warning', title: 'Oops...', text: 'Por favor, crea una contraseña.' });
-          passwordInput.focus();
-          return;
-        }
-
-        if (terminosCheckbox && !terminosCheckbox.checked) {
-          Swal.fire({ icon: 'info', title: 'Atención', text: 'Debes aceptar los términos y condiciones.' });
-          return;
-        }
-
-        // Éxito
-        Swal.fire({ icon: 'success', title: '¡Registro exitoso!', text: 'Redirigiendo...' })
-          .then(() => form.submit());
-      });
-
-      function validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-      }
-    });
-  </script>
 </body>
 </html>
