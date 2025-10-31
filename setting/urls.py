@@ -27,4 +27,5 @@ urlpatterns = [
     path('signup/', RegisterView.as_view(), name='signup'),
     path('login/', LoginView.as_view(), name='login'),
     path('main/', MainViews.as_view(), name='main'),
+    path('', include('applications.cuestionario.urls')),
 ]

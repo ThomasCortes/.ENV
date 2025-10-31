@@ -1,0 +1,39 @@
+{% extends "cuestionario/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-gray-800">
+  
+  <!-- ✅ Tarjeta de confirmación -->
+  <div class="bg-white shadow-xl rounded-2xl p-10 text-center max-w-md w-full">
+    <div class="mb-6">
+      <img src="{% static 'images/success-check.gif' %}" alt="Completado" class="mx-auto w-32 h-32">
+    </div>
+
+    <h2 class="text-2xl font-bold text-green-600 mb-2">¡Cuestionario completado! 🎉</h2>
+    <p class="text-gray-600 mb-4">
+      Gracias por completar tu información.  
+      Tu perfil nutricional ha sido guardado exitosamente.
+    </p>
+
+    <p class="text-sm text-gray-500 mb-6">
+      Nuestro sistema utilizará tus datos para generar recomendaciones y dietas personalizadas.
+    </p>
+
+    <!-- Botones -->
+    <div class="flex flex-col space-y-3">
+      <a href="{% url 'home' %}" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition">
+        Volver al inicio
+      </a>
+      <a href="{% url 'perfil_usuario' %}" class="text-green-700 hover:text-green-800 font-medium">
+        Ver mi perfil nutricional →
+      </a>
+    </div>
+  </div>
+
+  <!-- 🎨 Detalle decorativo -->
+  <div class="mt-10 text-sm text-gray-400">
+    <p>Nutriet © 2025 — Tu salud, nuestra meta 🥗</p>
+  </div>
+</div>
+{% endblock %}

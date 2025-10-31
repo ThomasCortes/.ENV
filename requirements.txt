@@ -5,3 +5,5 @@ ckeditor==6.4.2
 #Bases de datos
 mysqlclient==2.2.7
 
+#forms
+django-formtools
