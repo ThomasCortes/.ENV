@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Código de Recuperación - Nutriet</title>
+  <link rel="stylesheet" href="{% static 'styles/register.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      width: 90%;
+      max-width: 1200px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .form-container {
+      flex: 1;
+      max-width: 600px;
+      transform: scale(1.1);
+      transform-origin: left center;
+    }
+
+    .volver {
+      background-color: #ff1660;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      color: #ff1660;
+      margin-bottom: 25px;
+      font-size: 28px;
+    }
+
+    form label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+      margin-top: 10px;
+    }
+
+    form input[type="text"],
+    form input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .registrar {
+      background-color: #fff5d1;
+      color: #000;
+      font-weight: 600;
+      border: 1px solid #000;
+      display: inline-block;
+      width: 100%;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .registrar:hover {
+      background-color: #ffecb3;
+    }
+
+    .logo {
+      margin-left: 200px;
+      margin-top: 100px;
+      height: 500px;
+      width: 500px;
+      border-radius: 50px;
+    }
+    
+    .error-msg {
+  color: red;
+  font-weight: 500;
+}
+
+.success-msg {
+  color: green;
+  font-weight: 500;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <a href="{% url 'recuperar' %}">
+        <button class="volver">← Volver</button>
+      </a>
+
+      <h2>Código de recuperación</h2>
+      <p>Ingresa el código de 6 dígitos que se envió a tu correo electrónico</p>
+
+      <!-- 🔥 FORMULARIO REAL DE VERIFICACIÓN -->
+      <form method="POST" action="{% url 'verify_code' %}">
+        {% csrf_token %}
+        <label for="email">Correo Electrónico</label>
+        <input type="email" name="email" id="email" placeholder="Tu correo electrónico" required />
+
+        <label for="code">Código de verificación</label>
+        <input type="text" name="code" id="code" placeholder="123456" maxlength="6" required />
+
+        <button type="submit" class="registrar">Verificar código</button>
+      </form>
+
+      <!-- 🔔 Mostrar mensajes -->
+{% if messages %}
+  <ul style="margin-top:15px;">
+    {% for message in messages %}
+      <li class="{% if message.tags == 'error' %}error-msg{% else %}success-msg{% endif %}">
+        {{ message }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+    </div>
+
+    <div class="logo-container">
+      <img src="{% static 'images/logo.png' %}" alt="Nutriet logo" class="logo">
+    </div>
+  </div>
+</body>
+</html>
