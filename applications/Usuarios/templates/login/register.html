@@ -179,41 +179,47 @@
 </head>
 
 <body>
-  <div class="container">
+<div class="container">
     <div class="form-container">
-      <a href="{% url 'home' %}" target="_self"><button class="volver">← volver</button></a>
 
-      <h2>Registro de Usuario</h2>
+        <a href="{% url 'home' %}" target="_self">
+            <button class="volver">Volver</button>
+        </a>
 
-      <!-- Formulario Django -->
-      <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
+        <h2>Registro de Usuario</h2>
 
-        <div class="terminos">
-          <input type="checkbox"/>
-          <span>Acepto los términos y condiciones</span>
+        <!-- 🧾 Formulario Django -->
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <div class="terminos">
+                <input type="checkbox" name="terminos" required>
+                <span>Acepto los términos y condiciones</span>
+            </div>
+
+            <button type="submit" class="registrar">Registrarse</button>
+        </form>
+
+        <div class="divider">O</div>
+
+        <div class="social-buttons">
+            <button class="google">
+                <img src="https://cdn-icons-png.flaticon.com/512/720/720255.png" alt="Google">
+                Registrarte con Google
+            </button>
+            <button class="apple">
+                <img src="https://cdn-icons-png.flaticon.com/512/0/747.png" alt="Apple">
+                Registrarte con Apple
+            </button>
         </div>
 
-        <button type="submit" class="registrar">Registrarse</button>
-      </form>
+        <div class="login-text">
+            <p>¿Ya tienes una cuenta? 
+                <a href="{% url 'login' %}">Iniciar sesión</a>
+            </p>
+        </div>
 
-      <div class="divider">Or</div>
-
-      <div class="social-buttons">
-        <button class="google">
-          <img src="https://cdn-icons-png.flaticon.com/512/720/720255.png" alt="Google" />
-          Registrate con Google
-        </button>
-        <button class="apple">
-          <img src="https://cdn-icons-png.flaticon.com/512/0/747.png" alt="Apple" />
-          Registrate con Apple
-        </button>
-      </div>
-
-      <p class="login-text">
-        ¿Ya tienes una cuenta? <a href="{% url 'login' %}">Iniciar sesión</a>
-      </p>
     </div>
 
     <div class="logo-container">

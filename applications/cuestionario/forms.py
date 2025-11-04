@@ -132,7 +132,7 @@ class FrecuenciaComidasForm(forms.ModelForm):
         ('snacks', 'Snacks'),
     ]
 
-    comidas = forms.MultipleChoiceField(
+    frecuencia = forms.MultipleChoiceField(
         choices=FrecuenciaComidas.Frecuencia_CHOICES,
         widget=forms.CheckboxSelectMultiple,
         label="¿Cuáles comidas realizas al día?"
@@ -140,4 +140,4 @@ class FrecuenciaComidasForm(forms.ModelForm):
 
     class Meta:
         model = FrecuenciaComidas
-        fields = ['comidas']
+        fields = ['frecuencia']

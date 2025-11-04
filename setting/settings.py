@@ -134,16 +134,9 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Redirige aqui despues de un login exitoso
-LOGIN_REDIRECT_URL = '/'
-
-# Redirige aqui si se intenta acceder a una pagina protegida sin estar logueado
-LOGIN_URL = '/accounts/login/'
-
-# Redirige aqui despues de un logout
-LOGOUT_REDIRECT_URL = '/'
-
-LOGIN_TEMPLATE = 'login/login.html'
+LOGIN_REDIRECT_URL = '/cuestionario/'
+LOGIN_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 AUTHENTICATION_BACKENDS = [
     'applications.Usuarios.backends.CustomAuthBackend',

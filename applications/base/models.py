@@ -84,10 +84,11 @@ class FrecuenciaComidas(models.Model):
         ('snacks', 'Snacks'),
     ]
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
-    frecuencia = models.CharField(max_length=10, choices=Frecuencia_CHOICES)
+    frecuencia = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"Comidas de {self.usuario.nombre} - {self.get_frecuencia_display()}"
+        # 🟢 CORRECCIÓN: Usar directamente el valor del campo 'frecuencia'
+        return f"Comidas de {self.usuario.nombre} - {self.frecuencia}" 
 
     class Meta:
         verbose_name = "Frecuencia de Comida"
