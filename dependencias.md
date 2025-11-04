@@ -29,3 +29,7 @@ https://pypi.org/project/django-tailwind/
         {% endblock %}
     </body>
     </html>
+
+
+    --contraseña del correo de "nutriet.col@gmail.com"--
+    ---Nutrietoficial2025*--
