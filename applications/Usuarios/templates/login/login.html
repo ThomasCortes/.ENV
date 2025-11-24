@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>login - Nutriet</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
     /* Ejemplo con Flexbox */
@@ -210,26 +211,16 @@
                 <button type="submit" class="registrar">Iniciar sesión</button> 
             </form>
             
-            {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li class="{{ message.tags }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-
             <div class="divider">Or</div>
 
-            <div class="social-buttons">
-                <button class="google">
-                    <img src="https://cdn-icons-png.flaticon.com/512/720/720255.png" alt="Google">
-                    Iniciar sesión con Google
-                </button>
-                <button class="apple">
-                    <img src="https://cdn-icons-png.flaticon.com/512/8/8747.png" alt="Apple">
-                    Iniciar sesión con Apple
-                </button>
-            </div>
+<div class="social-buttons">
+    <div id="googleButtonDiv"></div> 
+    
+    <button class="apple">
+        <img src="https://cdn-icons-png.flaticon.com/512/8/8747.png" alt="Apple">
+        Iniciar sesión con Apple
+    </button>
+</div>            
             
             <div class="login-text">
                 ¿No tienes una cuenta? <a href="{% url 'register' %}">Regístrate</a>
@@ -245,7 +236,34 @@
         </div>
     </div>
 </body>
+{% load static %}
+<script>
+    // Este código debe estar en la plantilla de login a la que redirige la vista
+    {% if messages %}
+        {% for message in messages %}
+            // Verifica el tag 'success' enviado por la vista 'change_password'
+            {% if message.tags == 'success' %}
+                Swal.fire({
+                    icon: 'success', // Icono de éxito
+                    title: '¡Éxito!',
+                    text: "{{ message }}", // Contenido: "Tu contraseña ha sido actualizada correctamente."
+                    timer: 1000, 
+                    showConfirmButton: false, 
+                    position: 'center' // Muestra la notificación en la esquina superior derecha
+                });
+            {% endif %}
+            
+            // Opcional: Manejar otros tipos de mensajes si es necesario en el login
+            {% if message.tags == 'error' %}
+                Swal.fire({
+                    icon: 'error', 
+                    title: 'Error',
+                    text: "{{ message }}", 
+                });
+            {% endif %}
 
-
+        {% endfor %}
+    {% endif %}
+</script>
 </body>
 </html>

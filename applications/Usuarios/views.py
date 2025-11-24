@@ -14,8 +14,13 @@ from django.shortcuts import render, redirect
 from .models import PasswordResetCode
 from django.conf import settings
 #OTRO NUEVO
-
+from django.contrib.auth.hashers import make_password
+from .models import Usuario
 #MAS CLASES
+
+
+
+
 def send_verification_code(request):
     """Vista para solicitar el correo y enviar el código de recuperación"""
     if request.method == 'POST':
@@ -36,13 +41,15 @@ def send_verification_code(request):
         # Enviar el correo con el código
         send_mail(
             'Código de recuperación',
-            f'Tu código de recuperación es: {code}',
+            f'¡Hola!\nTu código de recuperacion de contraseña es: {code}\n'
+            'Este código expira en unos minutos, así que te aconsejamos usarlo pronto\n'
+            'Gracias por confiar en nosotros 💚',
             settings.EMAIL_HOST_USER,  # Desde el correo configurado
             [email],                   # Destinatario
             fail_silently=False,
         )
 
-        messages.success(request, 'Código enviado a tu correo.')
+        messages.success(request, 'Se esta enviando un código a tu correo electronico.')
         return redirect('verify_code')  # Página para ingresar el código
 
     return render(request, 'recuperar/recuperar_contraseña.html')
@@ -98,30 +105,31 @@ def change_password(request):
 
 
 # Create your views here.
-class RegisterView(CreateView):
-    form_class = RegistroForm
+class RegisterView(FormView):
     template_name = 'login/register.html'
+    form_class = RegistroForm
     success_url = reverse_lazy('cuestionario')
 
     def form_valid(self, form):
-        nombre = form.cleaned_data.get('nombre')
-        email = form.cleaned_data.get('email')
-        password = form.cleaned_data.get('password')
+        # Crear el usuario
+        user = form.save(commit=False)
+        user.set_password(form.cleaned_data['password'])
+        user.save()
 
-        user = Usuario.objects.create_user(
-            nombre=nombre,
-            email=email,
-            password=password
-        )
-        # 🟢 Solución: Especificar el backend personalizado
-        # Usamos la ruta exacta que definiste en settings.py para el login automático.
-        login(
-            self.request, 
-            user, 
-            backend='applications.Usuarios.backends.CustomAuthBackend' 
-        )
-        # Continuar con el flujo normal (redirige al cuestionario)
-        return redirect('cuestionario')
+        messages.success(self.request, "¡Registro exitoso! Bienvenido a Nutriet.")
+        
+        # Login automático
+        login(self.request, user, backend='applications.Usuarios.backends.CustomAuthBackend')
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Mostrar errores de Django en SweetAlert (corrección)
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, error)  # ← CAMBIO AQUÍ
+        
+        return self.render_to_response(self.get_context_data(form=form))
 
 # Define la ruta de tu backend personalizado (Asegúrate de que esta sea la correcta)
 CUSTOM_BACKEND = 'applications.Usuarios.backends.CustomAuthBackend'
@@ -163,6 +171,21 @@ class PasswordView(TemplateView):
         return render(request, "recuperar_contraseña.html")
 
 
+#VENTANAS EMERGENTES DEL REGISTER
+def registro(request):
+    if request.method == "POST":
+        form = RegistroForm(request.POST)
 
+        if form.is_valid():
+            usuario = form.save(commit=False)
+            usuario.password = make_password(form.cleaned_data["password"])
+            usuario.save()
 
+            messages.success(request, "¡Registro exitoso! Ya puedes iniciar sesión.")
+            return redirect("login")
+        else:
+            messages.error(request, "Hay errores en el formulario. Revisa los campos.")
+    else:
+        form = RegistroForm()
 
+    return render(request, "usuarios/registro.html", {"form": form})

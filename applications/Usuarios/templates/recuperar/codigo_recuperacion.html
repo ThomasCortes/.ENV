@@ -122,9 +122,6 @@
       <!-- 🔥 FORMULARIO REAL DE VERIFICACIÓN -->
       <form method="POST" action="{% url 'verify_code' %}">
         {% csrf_token %}
-        <label for="email">Correo Electrónico</label>
-        <input type="email" name="email" id="email" placeholder="Tu correo electrónico" required />
-
         <label for="code">Código de verificación</label>
         <input type="text" name="code" id="code" placeholder="123456" maxlength="6" required />
 
@@ -132,20 +129,42 @@
       </form>
 
       <!-- 🔔 Mostrar mensajes -->
-{% if messages %}
-  <ul style="margin-top:15px;">
-    {% for message in messages %}
-      <li class="{% if message.tags == 'error' %}error-msg{% else %}success-msg{% endif %}">
-        {{ message }}
-      </li>
-    {% endfor %}
-  </ul>
-{% endif %}
     </div>
 
     <div class="logo-container">
       <img src="{% static 'images/logo.png' %}" alt="Nutriet logo" class="logo">
     </div>
   </div>
+
+
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            // El motor de Django procesa esto ANTES que el navegador vea el script.
+            {% if message.tags == 'success' %}
+                Swal.fire({
+                    icon: 'success', 
+                    title: '¡Enviando Código!',
+                    text: "{{ message }}", // Contiene "Código enviado a tu correo."
+                    timer: 2000, 
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    position: 'center' 
+                });
+            {% elif message.tags == 'error' %}
+                Swal.fire({
+                    icon: 'error', 
+                    title: 'Error',
+                    text: "{{ message }}", 
+                });
+            {% endif %}
+        </script>
+    {% endfor %}
+{% endif %}
+
+  
 </body>
 </html>

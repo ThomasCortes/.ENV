@@ -22,7 +22,6 @@ from applications.home.views import MainViews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
     path('', include('applications.home.urls')),
     path('register/', RegisterView.as_view(), name='register'),
     path('recuperar/', PasswordView.as_view(), name='recuperar'),
@@ -30,4 +29,6 @@ urlpatterns = [
     path('main/', MainViews.as_view(), name='main'),
     path('', include('applications.cuestionario.urls')),
     path('', include('applications.Usuarios.urls')),
+    path('', include('applications.Apispoonacular.urls')),
+    #URL INICIAR SESION GOOGLE
 ]

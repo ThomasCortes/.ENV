@@ -1,24 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-#NUEVAS IMPORTACIONES
-from django.db import models
 from django.utils import timezone
 from datetime import timedelta
 
-#NUEVAS CLASES
+
 class PasswordResetCode(models.Model):
     email = models.EmailField()
     code = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def is_valid(self):
-        # Expira a los 10 minutos
         return timezone.now() < self.created_at + timedelta(minutes=10)
 
     def __str__(self):
         return f"{self.email} - {self.code}"
-    
-#HASTA AQUI
+
 
 class UsuarioManager(BaseUserManager):
     def create_user(self, email, nombre, password=None):
@@ -41,10 +37,9 @@ class UsuarioManager(BaseUserManager):
         return user
 
 
-class Usuario(AbstractBaseUser, PermissionsMixin):  # 👈 Agrega PermissionsMixin aquí
+class Usuario(AbstractBaseUser, PermissionsMixin):
     nombre = models.CharField('Nombre completo', max_length=150, unique=True)
     email = models.EmailField('Correo electrónico', unique=True)
-    password = models.CharField('Contraseña', max_length=128)
     numero_telefono = models.CharField('Número de teléfono', max_length=15, blank=True, null=True)
 
     date_joined = models.DateTimeField('Fecha de registro', auto_now_add=True)

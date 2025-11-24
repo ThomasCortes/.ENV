@@ -5,22 +5,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registro - Nutriet</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Ejemplo con Flexbox */
-    .container {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    /* Ejemplo con CSS Grid */
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
     * {
       margin: 0;
       padding: 0;
@@ -104,7 +94,6 @@
       display: inline-block;
       width: 100%;
       padding: 10px 20px;
-      text-decoration: none;
       border-radius: 8px;
       cursor: pointer;
       text-align: center;
@@ -159,37 +148,26 @@
 
     .logo {
       margin-left: 200px;
-      margin-top: 100px;
       height: 500px;
       width: 500px;
       border-radius: 50px;
-    }
-
-    .brand {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: 2px;
-    }
-
-    .slogan {
-      font-size: 16px;
-      color: #555;
     }
   </style>
 </head>
 
 <body>
+
 <div class="container">
     <div class="form-container">
 
-        <a href="{% url 'home' %}" target="_self">
+        <a href="{% url 'home' %}">
             <button class="volver">Volver</button>
         </a>
 
         <h2>Registro de Usuario</h2>
 
-        <!-- 🧾 Formulario Django -->
-        <form method="post">
+        <!-- FORMULARIO -->
+        <form method="post" id="formRegistro">
             {% csrf_token %}
             {{ form.as_p }}
 
@@ -215,7 +193,7 @@
         </div>
 
         <div class="login-text">
-            <p>¿Ya tienes una cuenta? 
+            <p>¿Ya tienes una cuenta?
                 <a href="{% url 'login' %}">Iniciar sesión</a>
             </p>
         </div>
@@ -225,61 +203,21 @@
     <div class="logo-container">
         <img src="{% static 'images/logo.png' %}" alt="Nutriet Logo" class="logo" />
     </div>
-  </div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.querySelector("form");
-      const registrar = document.querySelector(".registrar");
-      const nombreInput = form.querySelector('input[type="text"]');
-      const emailInput = form.querySelector('input[type="email"]');
-      const passwordInput = form.querySelector('input[type="password"]');
-      const terminosCheckbox = form.querySelector('input[type="checkbox"]');
-
-      registrar.addEventListener("click", function (e) {
-        e.preventDefault();
-
-        if (nombreInput && nombreInput.value.trim() === "") {
-          Swal.fire({ icon: 'warning', title: 'Oops...', text: 'Por favor, ingresa tu nombre.' });
-          nombreInput.focus();
-          return;
-        }
-
-        if (emailInput && emailInput.value.trim() === "") {
-          Swal.fire({ icon: 'warning', title: 'Oops...', text: 'Por favor, ingresa tu correo electrónico.' });
-          emailInput.focus();
-          return;
-        }
-
-        if (emailInput && !validateEmail(emailInput.value.trim())) {
-          Swal.fire({ icon: 'error', title: 'Correo inválido', text: 'Por favor, ingresa un correo electrónico válido.' });
-          emailInput.focus();
-          return;
-        }
-
-        if (passwordInput && passwordInput.value.trim() === "") {
-          Swal.fire({ icon: 'warning', title: 'Oops...', text: 'Por favor, crea una contraseña.' });
-          passwordInput.focus();
-          return;
-        }
-
-        if (terminosCheckbox && !terminosCheckbox.checked) {
-          Swal.fire({ icon: 'info', title: 'Atención', text: 'Debes aceptar los términos y condiciones.' });
-          return;
-        }
-
-        // Éxito
-        Swal.fire({ icon: 'success', title: '¡Registro exitoso!', text: 'Redirigiendo...' })
-          .then(() => form.submit());
-      });
-
-      function validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-      }
-    });
-  </script>
+<!-- 🔥 SWEETALERT PARA MENSAJES DE DJANGO -->
+{% if messages %}
+<script>
+    {% for message in messages %}
+        Swal.fire({
+            icon: "{% if 'success' in message.tags %}success{% else %}error{% endif %}",
+            title: "{{ message|escapejs }}",
+            showConfirmButton: false,
+            timer: 2500
+        });
+    {% endfor %}
+</script>
+{% endif %}
 
 </body>
 </html>

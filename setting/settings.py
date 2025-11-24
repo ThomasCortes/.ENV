@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 """
 Django settings for Nutriet project.
@@ -46,7 +47,23 @@ INSTALLED_APPS = [
     'applications.cuestionario',
     'applications.home',
     'applications.Usuarios',
+    # Allauth
+    #API
+    'applications.Apispoonacular',
+
 ]
+SITE_ID = 1
+
+
+#INICIO SESION GOOGLE
+AUTHENTICATION_BACKENDS = [
+    #-------------------------------------------------------#
+    'applications.Usuarios.backends.CustomAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+
+]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,6 +73,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #allauth
+
 ]
 
 ROOT_URLCONF = 'Nutriet.urls'
@@ -75,7 +94,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Nutriet.wsgi.application'
 
 
 # Database
@@ -83,15 +101,10 @@ WSGI_APPLICATION = 'Nutriet.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'nutriet',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -144,11 +157,6 @@ LOGIN_REDIRECT_URL = '/cuestionario/'
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/login/'
 
-AUTHENTICATION_BACKENDS = [
-    'applications.Usuarios.backends.CustomAuthBackend',
-    'django.contrib.auth.backends.ModelBackend', # Mantén el estándar si es necesario
-]
-
 AUTH_USER_MODEL = 'Usuarios.Usuario'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -156,5 +164,12 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nutriet.col@gmail.com'
-EMAIL_HOST_PASSWORD = 'trglqixtpxjkuvdi'
+EMAIL_HOST_PASSWORD = 'rppaponsqtklpviu'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+
+#API SPOONACULAR
+
+SPOONACULAR_API_KEY='1bebc2fc4d344606898fcb17d7265b2e'
+SPOONACULAR_BASE_URL = 'https://api.spoonacular.com/'

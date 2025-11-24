@@ -1,0 +1,23 @@
+<h1>Plan de Comidas para {{ calorias }} Calorías</h1>
+
+{% if plan %}
+    <h2>Plan Diario (Total de Macro-nutrientes)</h2>
+    <ul>
+        <li>Calorías: {{ plan.nutrients.calories }}</li>
+        <li>Proteínas: {{ plan.nutrients.protein }}</li>
+        <li>Grasas: {{ plan.nutrients.fat }}</li>
+        <li>Carbohidratos: {{ plan.nutrients.carbohydrates }}</li>
+    </ul>
+
+    <h2>Recetas Sugeridas</h2>
+    <ul>
+    {% for comida in plan.meals %}
+        <li>
+            **{{ comida.title }}** (ID: {{ comida.id }})
+            <p>Preparación: {{ comida.readyInMinutes }} minutos</p>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No se pudo generar el plan de comidas. Revisa tu clave API.</p>
+{% endif %}
