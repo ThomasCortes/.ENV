@@ -47,8 +47,7 @@ INSTALLED_APPS = [
     'applications.cuestionario',
     'applications.home',
     'applications.Usuarios',
-    # Allauth
-    #API
+    'applications.calendario',
     'applications.Apispoonacular',
 
 ]
@@ -64,7 +63,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -73,8 +71,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #allauth
-
 ]
 
 ROOT_URLCONF = 'Nutriet.urls'
@@ -94,6 +90,10 @@ TEMPLATES = [
     },
 ]
 
+WSGI_APPLICATION = 'Nutriet.wsgi.application'
+
+# Database
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
 # Database
@@ -157,6 +157,11 @@ LOGIN_REDIRECT_URL = '/cuestionario/'
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/login/'
 
+AUTHENTICATION_BACKENDS = [
+    'applications.Usuarios.backends.CustomAuthBackend',
+    'django.contrib.auth.backends.ModelBackend', # Mantén el estándar si es necesario
+]
+
 AUTH_USER_MODEL = 'Usuarios.Usuario'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -166,7 +171,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nutriet.col@gmail.com'
 EMAIL_HOST_PASSWORD = 'rppaponsqtklpviu'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
 
 
 #API SPOONACULAR

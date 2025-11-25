@@ -30,5 +30,7 @@ urlpatterns = [
     path('', include('applications.cuestionario.urls')),
     path('', include('applications.Usuarios.urls')),
     path('', include('applications.Apispoonacular.urls')),
+    #Calendario
+    path('calendario/', include('applications.calendario.urls')),
     #URL INICIAR SESION GOOGLE
 ]

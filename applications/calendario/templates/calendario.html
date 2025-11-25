@@ -1,0 +1,457 @@
+  {% load static %}
+  <!DOCTYPE html>
+  <html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario - Nutriet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- FullCalendar -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+    <!-- Flatpickr (Timepicker) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+<style>
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        text-align: center;
+        margin-top: 20px;
+        color: #f50057;
+      }
+
+      /* Menú lateral */
+      .menu-lateral {
+        height: 100%;
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: -250px;
+        background-color: rgb(255, 249, 230);
+        padding-top: 60px;
+        transition: left 0.3s ease-in-out;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        z-index: 999;
+      }
+
+      .menu-lateral.activo { left: 0; }
+
+      .menu-lateral a {
+        padding: 15px 25px;
+        text-decoration: none;
+        font-size: 18px;
+        color: rgb(0, 0, 0);
+        display: block;
+      }
+
+      .menu-lateral a:hover {
+        background-color: #fff3cd;
+      }
+
+      #boton-abrir-cerrar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        padding: 10px 15px;
+        height: 100%;
+        background-color: rgb(255, 249, 230);
+        color: #f50057;
+        border: none;
+        cursor: pointer;
+      }
+
+      #boton-cerrar {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #f50057;
+      }
+
+      main {
+        margin-left: 280px;
+        margin-top: 80px;
+        text-align: center;
+        padding: 10px;
+      }
+      #calendar {
+        width: 80%;
+        max-width: 900px;
+        background: white;
+        border-radius: 25px;
+        padding: 20px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        margin: 0 auto; 
+        margin-top: 20px;
+      }
+
+      img.logo {
+        width: 70px;
+        height: auto;
+        margin-top: 25px;
+        margin-left: 5px;
+      }
+
+      ul {
+        list-style-type: none;
+        margin: 2px;
+        padding: 1px;
+        width: 100px;
+      }
+
+      li {
+        margin-bottom: 20px;
+      }
+
+      #home, #apple, #chart, #calendar-icon, #cog, #gem, #cerrar, #calendar-link {
+        margin-left: 20px;
+        font-size: 20px;
+        cursor: pointer;
+        color: #f50057;
+        padding-left: 10px;
+      }
+
+      #cerrar {
+        margin-top: 300px; 
+        margin-left: 30px;
+      }
+
+      /* Modal */
+      .modal-content {
+        border-radius: 15px;
+        border: 2px solid #f50057;
+      }
+
+      .modal-header {
+        background-color: #f50057;
+        color: rgb(255, 249, 230);
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+      }
+
+      .btn-guardar {
+        background-color:  #f50057;
+        color: white;
+        border: none;
+      }
+
+      .btn-eliminar {
+        background-color:  #f50057;
+        color: white;
+        border: none;
+      }
+
+      .btn-guardar:hover,
+      .btn-eliminar:hover {
+        background-color:  #f50057;
+        color: rgb(255, 239, 187);
+      }
+      /* Asegura que los días del calendario no se corten */
+      .fc-daygrid-day {
+          position: relative;
+          overflow: hidden;
+      }
+
+      /* Estilos del recuadro donde va el evento */
+      .fc-daygrid-event {
+          padding: 6px 8px !important;
+          font-size: 13px !important;
+          background-color: #fff6e5 !important; 
+          border-left: 5px solid #f50057 !important;
+          border-radius: 10px !important;
+          white-space: normal !important;
+          word-wrap: break-word !important;
+          overflow-wrap: break-word;
+      }
+
+      /* Título del evento */
+      .fc-event-title {
+          font-size: 13px !important;
+          font-weight: 700;
+          color: #333;
+          white-space: normal !important;
+      }
+
+      /* Hora del evento */
+      .fc-event-time {
+          font-size: 13px !important;
+          font-weight: 500;
+          color: #f50057 !important;
+      }
+
+      /* Espaciado entre eventos */
+      .fc-daygrid-day-events {
+          gap: 6px !important;
+      }
+
+      /* Optimización móvil */
+      @media (max-width: 768px) {
+          #calendar {
+              width: 95% !important;
+              padding: 12px !important;
+          }
+
+          .fc-daygrid-event {
+              font-size: 11px !important;
+              padding: 4px 5px !important;
+          }
+
+          .fc-event-title {
+              font-size: 11px !important;
+          }
+          }
+          .evento-vencido {
+              background-color: #ffdddd !important;
+              border-left: 5px solid #ff0000 !important;
+              color: #b30000 !important;
+          }
+  </style>
+  </head>
+  <body>
+    <!-- Modal de actividad por terminar -->
+<div class="modal fade" id="modalAlertaActividad" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:20px; border:2px solid #f50057;">
+      <div class="modal-header" style="background:#f50057; color:white; border-radius:18px 18px 0 0;">
+        <h5 class="modal-title">⚠ Actividad por terminar</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background:white;"></button>
+      </div>
+
+      <div class="modal-body" id="mensajeAlertaActividad" style="font-size:18px; color:#444; text-align:center;">
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn" data-bs-dismiss="modal" 
+                style="background:#f50057; color:white; border-radius:10px;">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- Botón menú -->
+    <div id="boton-abrir-cerrar">
+      <ul>
+        <img src="{% static 'images/logo.png' %}" alt="Nutriet Logo" class="logo" />
+        <li id="home"><i class="fas fa-home"></i></li>
+        <li id="apple"><i class="fas fa-apple-alt"></i></li>
+        <li id="chart"><i class="fas fa-chart-line"></i></li>
+        <li id="cog"><i class="fas fa-cog"></i></li>
+        <li id="gem"><i class="fas fa-gem"></i></li>
+        <li id="cerrar"><i class="fas fa-right-from-bracket"></i></li>
+      </ul>
+    </div>
+
+    <!-- Menú lateral -->
+    <aside id="menu-lateral" class="menu-lateral">
+      <a id="home" href="{% url 'main' %}"><i class="fas fa-home"></i> Inicio</a>
+      <a id="apple" href="#"><i class="fas fa-apple-alt"></i> Dietas</a>
+      <a id="chart" href="#"><i class="fas fa-chart-line"></i> Seguimiento</a>
+      <a id="cog" href="#"><i class="fas fa-cog"></i> Configuración</a>
+      <a id="gem" href="#"><i class="fas fa-gem"></i> Planes</a>
+      <button id="boton-cerrar">◀</button>
+      <a href="#" id="cerrar"><i class="fas fa-right-from-bracket"></i> Cerrar sesión</a>
+    </aside>
+
+    <main>
+      <div id="calendar"></div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalEvento" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Agregar / Editar Actividad</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <input type="hidden" id="eventoId">
+
+            <div class="mb-3">
+              <label class="form-label">Actividad</label>
+              <input type="text" class="form-control" id="titulo">
+            </div>
+
+            <div class="mb-3">
+              <label for="hora" class="form-label">Hora</label>
+              <input type="text" id="hora" class="form-control" placeholder="Selecciona una hora">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Fecha</label>
+              <input type="date" class="form-control" id="fecha">
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-eliminar" id="eliminarEvento">Eliminar</button>
+            <button class="btn btn-guardar" id="guardarEvento">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    const calendarEl = document.getElementById('calendar');
+    const modalEvento = new bootstrap.Modal(document.getElementById('modalEvento'));
+
+    const tituloInput = document.getElementById('titulo');
+    const horaInput = document.getElementById('hora');
+    const fechaInput = document.getElementById('fecha');
+    const eventoId = document.getElementById('eventoId');
+
+    /* ============================
+      TimePicker con Flatpickr
+    ============================ */
+    flatpickr("#hora", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "h:i K",
+        time_24hr: false,
+        minuteIncrement: 1,
+        locale: "es"
+    });
+
+    /* ============================
+      Calendario
+    ============================ */
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'es',
+        selectable: true,
+        editable: true,
+        events: '/calendario/eventos/',
+
+        eventTimeFormat: { hour: 'numeric', minute: '2-digit', hour12: true },
+
+        dateClick(info) {
+            fechaInput.value = info.dateStr;
+            eventoId.value = '';
+            tituloInput.value = '';
+            horaInput.value = '';
+            modalEvento.show();
+        },
+
+        eventClick(info) {
+            eventoId.value = info.event.id;
+            tituloInput.value = info.event.title;
+            fechaInput.value = info.event.startStr.split('T')[0];
+
+            if (info.event.start) {
+                horaInput.value = info.event.start.toTimeString().substring(0,5);
+            }
+
+            modalEvento.show();
+        }
+    });
+
+    calendar.render();
+
+    /* ============================
+      Guardar evento
+    ============================ */
+    document.getElementById('guardarEvento').addEventListener('click', function() {
+        const datos = {
+            id: eventoId.value,
+            title: tituloInput.value,
+            date: fechaInput.value,
+            time: horaInput.value || null
+        };
+
+        const url = datos.id ? `/calendario/editar/${datos.id}/` : '/calendario/agregar/';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}'},
+            body: JSON.stringify(datos)
+        }).then(() => {
+            calendar.refetchEvents();
+            modalEvento.hide();
+        });
+    });
+
+    /* ============================
+      Eliminar evento
+    ============================ */
+    document.getElementById('eliminarEvento').addEventListener('click', function() {
+        if (eventoId.value) {
+            fetch(`/calendario/eliminar/${eventoId.value}/`, {
+                method: 'DELETE',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            }).then(() => {
+                calendar.refetchEvents();
+                modalEvento.hide();
+            });
+        }
+    });
+});
+
+/* =======================================
+   ALERTA DE ACTIVIDADES VENCIDAS
+======================================= */
+document.addEventListener("DOMContentLoaded", function () {
+
+    fetch("/calendario/eventos/")
+        .then(res => res.json())
+        .then(eventos => {
+
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0); // 🔥 Solo comparación por fecha
+
+            eventos.forEach(ev => {
+                const fechaEvento = new Date(ev.start);
+                fechaEvento.setHours(0, 0, 0, 0);
+
+                // 🔥 Opción A: La fecha ya pasó (sin importar hora)
+                if (fechaEvento < hoy) {
+                    mostrarAlertaActividad(
+                        `La actividad <b>${ev.title}</b> ya pasó.`
+                    );
+                }
+            });
+        });
+
+    function mostrarAlertaActividad(mensaje) {
+        const texto = document.getElementById("mensajeAlertaActividad");
+        texto.innerHTML = mensaje;
+
+        const modal = new bootstrap.Modal(document.getElementById("modalAlertaActividad"));
+        modal.show();
+    }
+
+    // 🔥 Fix para que al cerrar NO quede oscurecida la pantalla
+    document.addEventListener("hidden.bs.modal", function () {
+        document.querySelectorAll(".modal-backdrop").forEach(el => el.remove());
+        document.body.classList.remove("modal-open");
+        document.body.style.removeProperty("overflow");
+        document.body.style.removeProperty("padding-right");
+    });
+});
+</script>
+  </body>
+  </html>
