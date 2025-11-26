@@ -115,9 +115,6 @@ class CuestionarioWizard(LoginRequiredMixin, SessionWizardView):
                 
         return redirect('cuestionario_completado')  
 
-# -----------------------------
-# ✅ Vista final de completado
-# -----------------------------
 @login_required(login_url='/login/')
 def cuestionario_completado(request):
     """Muestra la página de confirmación al finalizar el cuestionario"""

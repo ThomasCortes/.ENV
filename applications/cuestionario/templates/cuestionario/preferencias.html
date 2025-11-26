@@ -1,0 +1,14 @@
+{% extends "cuestionario/base.html" %}
+{% block content %}
+  <h3>Preferencias Alimentarias</h3>
+  <p>Selecciona para cada alimento si te gusta, no te gusta o no puedes consumirlo.</p>
+
+  <div class="preferencias-grid">
+    {% for field in form %}
+      <div class="alimento-item">
+        <label>{{ field.label }}</label>
+        {{ field }}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -19,9 +19,11 @@ class CaracteristicasFisicasForm(forms.ModelForm):
         fields = ['peso', 'altura', 'condicion_fisica', 'enfermedades', 'alergias', 'sexo']
         widgets = {
             'sexo': forms.RadioSelect(choices=[
-                ('masculino', 'Masculino'),
-                ('femenino', 'Femenino')
+                ('M', 'Masculino'),
+                ('F', 'Femenino')
             ]),
+            'peso': forms.NumberInput(attrs={'placeholder': 'Ej: 70.5 kg'}),
+            'altura': forms.NumberInput(attrs={'placeholder': 'Ej: 1.75 cm'}),
             'condicion_fisica': forms.TextInput(attrs={'placeholder': 'Ej: Buena, Regular, Mala'}),
             'enfermedades': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Ej: Hipertensión, diabetes...'}),
             'alergias': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Ej: Gluten, maní...'}),
@@ -81,13 +83,9 @@ class RestriccionesDietariasForm(forms.ModelForm):
 
 
 # --------------------------
-# 5️⃣ Formulario Preferencias Alimentarias (Panel de Emojis 🍎🍗🥦)
+# 5️⃣ Formulario Preferencias Alimentarias
 # --------------------------
 class PreferenciaAlimentariaForm(forms.Form):
-    """
-    Este formulario se genera dinámicamente a partir de los alimentos registrados.
-    El usuario elige una preferencia por cada alimento: 😋 / 😐 / 🚫
-    """
     PREFERENCIA_CHOICES = [
         ('like', '😋 Me gusta'),
         ('dislike', '😐 No me gusta'),
@@ -95,7 +93,7 @@ class PreferenciaAlimentariaForm(forms.Form):
     ]
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)  # Recibir usuario opcional
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
         alimentos = Alimento.objects.all().order_by('categoria', 'nombre')
@@ -103,6 +101,7 @@ class PreferenciaAlimentariaForm(forms.Form):
         for alimento in alimentos:
             field_name = f"alimento_{alimento.id}"
             label = f"{alimento.emoji or ''} {alimento.nombre}"
+
             self.fields[field_name] = forms.ChoiceField(
                 label=label,
                 choices=self.PREFERENCIA_CHOICES,
@@ -111,27 +110,22 @@ class PreferenciaAlimentariaForm(forms.Form):
             )
 
     def save(self, usuario):
-        """
-        Guarda todas las preferencias seleccionadas.
-        """
         for field_name, value in self.cleaned_data.items():
             if not value:
                 continue
             alimento_id = field_name.split('_')[1]
+
             PreferenciaAlimentaria.objects.update_or_create(
                 usuario=usuario,
                 alimento_id=alimento_id,
                 defaults={'preferencia': value}
             )
 
-class FrecuenciaComidasForm(forms.ModelForm):
-    Frecuencia_CHOICES = [
-        ('desayuno', 'Desayuno'),
-        ('almuerzo', 'Almuerzo'),
-        ('cena', 'Cena'),
-        ('snacks', 'Snacks'),
-    ]
 
+# --------------------------
+# 6️⃣ Formulario Frecuencia de Comidas (Fix)
+# --------------------------
+class FrecuenciaComidasForm(forms.ModelForm):
     frecuencia = forms.MultipleChoiceField(
         choices=FrecuenciaComidas.Frecuencia_CHOICES,
         widget=forms.CheckboxSelectMultiple,
