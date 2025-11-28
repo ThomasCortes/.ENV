@@ -1,10 +1,55 @@
 {% extends "cuestionario/base.html" %}
-
-{% block step_title %}
-    características Personales
-{% endblock %}
-
 {% block content %}
-    {{ form.as_p }}
-    
-    {% endblock %}
+  <h3>Características Físicas</h3>
+  {{ form.as_p }}
+{% endblock %}
+<style>body {
+  background: #f8fafc;
+  font-family: 'Poppins', sans-serif;
+}
+
+.cuestionario-container {
+  width: 60%;
+  margin: 2rem auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+  width: 100%;
+  background: #e5e7eb;
+  height: 8px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.progress {
+  height: 8px;
+  background: #22c55e;
+  border-radius: 5px;
+}
+
+.btn-next, .btn-prev {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: #22c55e;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-prev {
+  background-color: #9ca3af;
+}
+
+.alimento-item {
+  margin-bottom: 15px;
+}
+
+.emoji-choice label {
+  margin-right: 10px;
+}
+</style>

@@ -1,8 +1,7 @@
 from django import forms
-from .models import Usuario
-from django import forms
 from django.core.exceptions import ValidationError
-from applications.Usuarios.models import Usuario
+from django.contrib.auth import get_user_model
+User = get_user_model()
 import re
 
 
@@ -12,8 +11,8 @@ class RegistroForm(forms.ModelForm):
     telefono = forms.CharField(max_length=10)
 
     class Meta:
-        model = Usuario
-        fields = ['nombre', 'email', 'telefono', 'password', 'confirmar_password']
+        model = User
+        fields = ['username', 'email', 'telefono', 'password', 'confirmar_password']
 
     def clean_password(self):
         password = self.cleaned_data.get('password')

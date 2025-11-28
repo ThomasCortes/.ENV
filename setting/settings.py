@@ -57,7 +57,6 @@ SITE_ID = 1
 #INICIO SESION GOOGLE
 AUTHENTICATION_BACKENDS = [
     #-------------------------------------------------------#
-    'applications.Usuarios.backends.CustomAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
 
 ]
@@ -156,13 +155,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/cuestionario/'
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/login/'
+# Custom user model
+AUTH_USER_MODEL = 'Usuarios.Usuario'
 
 AUTHENTICATION_BACKENDS = [
-    'applications.Usuarios.backends.CustomAuthBackend',
     'django.contrib.auth.backends.ModelBackend', # Mantén el estándar si es necesario
 ]
 
-AUTH_USER_MODEL = 'Usuarios.Usuario'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

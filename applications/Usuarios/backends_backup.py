@@ -1,6 +1,7 @@
 # En tu archivo backends.py
 
-from .models import Usuario # Asegúrate de importar tu modelo
+from django.contrib.auth import get_user_model
+Usuario = get_user_model()
 from django.contrib.auth.hashers import check_password
 
 class CustomAuthBackend:

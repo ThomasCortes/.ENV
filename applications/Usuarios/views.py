@@ -2,8 +2,8 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
 from django.views.generic import CreateView, FormView,TemplateView
 from django.urls import reverse_lazy
-from django.contrib.auth.models import User
-from applications.Usuarios.models import Usuario
+from django.contrib.auth import get_user_model
+User = get_user_model()
 from .forms import RegistroForm,LoginForm
 from django.contrib import messages
 from .forms import LoginForm  
@@ -11,11 +11,9 @@ from .forms import LoginForm
 import random
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
-from .models import PasswordResetCode
 from django.conf import settings
 #OTRO NUEVO
 from django.contrib.auth.hashers import make_password
-from .models import Usuario
 #MAS CLASES
 
 
@@ -27,7 +25,7 @@ def send_verification_code(request):
         email = request.POST.get('email')
 
         # Verificar si el correo existe
-        if not Usuario.objects.filter(email=email).exists():
+        if not User.objects.filter(email=email).exists():
             messages.error(request, 'El correo no está registrado.')
             return redirect('send_verification_code')
 
@@ -89,7 +87,7 @@ def change_password(request):
             return redirect('change_password')
 
         # Cambiar contraseña del usuario
-        user = Usuario.objects.get(email=email)
+        user = User.objects.get(email=email)
         user.set_password(password)
         user.save()
 
@@ -137,32 +135,36 @@ CUSTOM_BACKEND = 'applications.Usuarios.backends.CustomAuthBackend'
 class LoginView(FormView):
     form_class = LoginForm
     template_name = 'login/login.html'
-    success_url = reverse_lazy('main') 
+    success_url = reverse_lazy('main')
 
     def form_valid(self, form):
         email_ingresado = form.cleaned_data.get('email')
         password_ingresada = form.cleaned_data.get('password')
+
+        user = None
         
-        # 1. Autenticación:
-        # 'authenticate' probará todos los backends, incluyendo el personalizado.
-        user = authenticate(
-            self.request, 
-            email=email_ingresado, 
-            password=password_ingresada
-        )
-        
-        # 2. Lógica de Respuesta
-        if user is not None:
-            # 🟢 CORRECCIÓN CLAVE: Especificar el backend para que Django sepa 
-            # cómo mantener la sesión activa sin ambigüedad.
-            login(self.request, user, backend=CUSTOM_BACKEND)
-            return super().form_valid(form) # Redirige a success_url ('main')
-        else:
-            # Si no autentica, añade un mensaje de error
-            messages.error(self.request, 'Correo de usuario o contraseña incorrectos.')
-            
-            # Vuelve a renderizar el formulario con los errores
-            return self.form_invalid(form)
+        # 1. Buscamos el usuario por el correo electrónico
+        try:
+            # Intentamos obtener el usuario que coincida con el email
+            user = User.objects.get(email=email_ingresado)
+        except User.DoesNotExist:
+            # Si no existe, 'user' se queda como None
+            pass 
+
+        # 2. Si el usuario existe, verificamos la contraseña
+        # La función check_password() es la que verifica el hash de la contraseña.
+        if user is not None and user.check_password(password_ingresada):
+            # Si es correcta, iniciamos sesión
+            login(self.request, user)
+            return super().form_valid(form)
+
+        # Usuario no encontrado O contraseña incorrecta
+        messages.error(self.request, 'Correo o contraseña incorrectos.')
+        return self.form_invalid(form)
+    
+    def form_invalid(self, form):
+        # ... (Mantén tu implementación existente) ...
+        return self.render_to_response(self.get_context_data(form=form))
         
         
 class PasswordView(TemplateView):

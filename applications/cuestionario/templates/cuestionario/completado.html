@@ -25,17 +25,11 @@
       <a href="{% url 'home' %}" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition">
         Volver al inicio
       </a>
-      <a href="{% url 'main' %}" class="text-green-700 hover:text-green-800 font-medium">
+      <a href="{% url 'perfil_usuario' %}" class="text-green-700 hover:text-green-800 font-medium">
         Ver mi perfil nutricional →
       </a>
     </div>
   </div>
-    <script>
-    setTimeout(() => {
-      window.location.href = "{% url 'home' %}";
-    }, 3000); // 3 segundos
-    </script>
-
 
   <!-- 🎨 Detalle decorativo -->
   <div class="mt-10 text-sm text-gray-400">
